@@ -20,6 +20,34 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
 		aiocmd.PromptToolkitCmd.__init__(self, ignore_sigint=False) #Setting this to false, since True doesnt work on windows...
 		self.rdpconn = rdpconn
 		self.pscmd_channelname = 'PSCMD'
+        asyncio.create_task(self.on_start())
+
+async def on_start(self):
+    await asyncio.sleep(2)
+
+    await self.do_enter()
+    await asyncio.sleep(0.1)
+
+    # Password:
+    await self.do_enter()
+    await asyncio.sleep(0.1)
+    await self.do_type("admin")
+    await asyncio.sleep(0.1)
+    await self.do_enter()
+
+    await asyncio.sleep(1)
+
+    await self.do_invokerun()
+    await asyncio.sleep(0.1)
+    await self.do_type("msedge.exe")
+    await asyncio.sleep(0.1)
+    await self.do_enter()
+    await asyncio.sleep(0.3)
+
+    await self.do_type("https://www.youtube.com/watch?v=hHbYyg7NymA")
+    await asyncio.sleep(0.1)
+    await self.do_enter()
+    await asyncio.sleep(0.5)
 
 	async def do_info(self):
 		print('HELLO!')
