@@ -42,6 +42,7 @@ setup(
 	python_requires='>=3.7',
 
 	install_requires=[
+        'pillow==9.5.0'
 		'prompt-toolkit',
 		'aardwolf>=0.2.5',
 		'pyqt5',
