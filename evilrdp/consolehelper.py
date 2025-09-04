@@ -5,7 +5,10 @@ import datetime
 import asyncio
 
 from evilrdp.external.aiocmd.aiocmd import aiocmd
-from aardwolf.commons.queuedata.keyboard import RDP_KEYBOARD_SCANCODE, RDP_KEYBOARD_UNICODE
+from aardwolf.commons.queuedata.keyboard import (
+    RDP_KEYBOARD_SCANCODE,
+    RDP_KEYBOARD_UNICODE,
+)
 from aardwolf.connection import RDPConnection
 from aardwolf.commons.queuedata.constants import MOUSEBUTTON, VIDEO_FORMAT
 from aardwolf.keyboard.layoutmanager import KeyboardLayoutManager
@@ -14,6 +17,7 @@ from aardwolf.commons.target import RDPConnectionDialect
 from aardwolf.keyboard import VK_MODIFIERS
 
 from evilrdp.vchannels.pscmd import PSCMDChannel
+
 
 class EVILRDPConsole(aiocmd.PromptToolkitCmd):
     def __init__(self, rdpconn:RDPConnection, args):
@@ -139,6 +143,9 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
     async def do_quit(self):
         """Exit the RDP session"""
         await self.do_disconnect()
+    async def do_quit(self):
+        """Exit the RDP session"""
+        await self.do_disconnect()
 
     async def do_screenshot(self):
         """Takes a screenshot"""
@@ -224,6 +231,8 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
             for line in response.split('\n'):
                 print(line.strip())
 
+        except Exception as e:
+            traceback.print_exc()
         except Exception as e:
             traceback.print_exc()
 
