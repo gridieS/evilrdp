@@ -11,9 +11,6 @@ from evilrdp.gui import EvilRDPGUI, RDPClientConsoleSettings
 from PyQt5.QtWidgets import QApplication, qApp
     
 def run(url, user, password, site_url):
-    global rdp_user
-    global rdp_password
-
     formatted_url = f"rdp+plain://{user}@{url}"
     logger.setLevel(logging.INFO)
 

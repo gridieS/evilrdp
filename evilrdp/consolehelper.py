@@ -21,11 +21,12 @@ from evilrdp.vchannels.pscmd import PSCMDChannel
 
 class EVILRDPConsole(aiocmd.PromptToolkitCmd):
     def __init__(self, rdpconn:RDPConnection, args):
-        aiocmd.PromptToolkitCmd.__init__(self, ignore_sigint=False) #Setting this to false, since True doesnt work on windows...
         self.rdpconn = rdpconn
+        asyncio.create_task(self.on_start(*args))
+        return
+        aiocmd.PromptToolkitCmd.__init__(self, ignore_sigint=False) #Setting this to false, since True doesnt work on windows...
         self.pscmd_channelname = 'PSCMD'
         self.args = args
-        asyncio.create_task(self.on_start(*args))
 
     async def on_start(self, user, password, site_url):
         print(user, password, site_url)
