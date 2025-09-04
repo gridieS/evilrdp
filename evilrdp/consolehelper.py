@@ -29,34 +29,32 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
         self.args = args
 
     async def on_start(self, user, password, site_url):
-        print(user, password, site_url)
         await asyncio.sleep(2)
 
         await self.do_enter()
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.3)
 
         # Password:
         if password != "":
             await self.do_enter()
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.3)
             await self.do_type(password)
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.3)
             await self.do_enter()
 
         # Login average delay
-        await asyncio.sleep(1)
+        await asyncio.sleep(3)
 
         await self.do_invokerun()
-        await asyncio.sleep(0.1)
-        await self.do_type("msedge.exe")
-        await asyncio.sleep(0.1)
-        await self.do_enter()
         await asyncio.sleep(0.3)
+        await self.do_type("msedge.exe")
+        await asyncio.sleep(0.3)
+        await self.do_enter()
+        await asyncio.sleep(2)
 
         await self.do_type(site_url)
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.3)
         await self.do_enter()
-        await asyncio.sleep(0.5)
 
     async def do_info(self):
         print('HELLO!')
