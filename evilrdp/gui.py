@@ -54,7 +54,7 @@ class RDPInterfaceThread(QObject):
 	result=pyqtSignal(RDPImage)
 	connection_terminated=pyqtSignal()
 	
-	def __init__(self, parent=None, **kwargs):
+	def __init__(self, args, parent=None, **kwargs):
 		super().__init__(parent, **kwargs)
 		self.settings:RDPClientConsoleSettings = None
 		self.conn = None
@@ -65,6 +65,7 @@ class RDPInterfaceThread(QObject):
 		self.gui_stopped_evt = threading.Event()
 		self.input_handler_thread = None
 		self.asyncthread:threading.Thread = None
+		self.args = args
 	
 	def set_settings(self, settings, in_q):
 		self.settings = settings
@@ -127,7 +128,7 @@ class RDPInterfaceThread(QObject):
 			if err is not None:
 				raise err
 
-			self.consoletask = asyncio.create_task(EVILRDPConsole(self.conn).run())
+			self.consoletask = asyncio.create_task(EVILRDPConsole(self.conn, self.args).run())
 			#asyncio.create_task(self.inputhandler())
 			input_handler_thread = asyncio.get_event_loop().run_in_executor(None, self.inputhandler, asyncio.get_event_loop())
 			self.loop_started_evt.set()
@@ -206,8 +207,9 @@ class RDPInterfaceThread(QObject):
 class EvilRDPGUI(QMainWindow):
 	#inputevent=pyqtSignal()
 
-	def __init__(self, settings:RDPClientConsoleSettings):
+	def __init__(self, args, settings:RDPClientConsoleSettings):
 		super().__init__()
+		self.args = args
 		self.settings = settings
 		self.ducky_key_ctr = 0
 
@@ -232,7 +234,7 @@ class EvilRDPGUI(QMainWindow):
 		# had to be created
 		self.in_q = queue.Queue()
 		self._thread=QThread()
-		self._threaded=RDPInterfaceThread(result=self.updateImage, connection_terminated=self.connectionClosed)
+		self._threaded=RDPInterfaceThread(self.args,result=self.updateImage, connection_terminated=self.connectionClosed)
 		self._threaded.set_settings(self.settings, self.in_q)
 		self._thread.started.connect(self._threaded.start)
 		self._threaded.moveToThread(self._thread)

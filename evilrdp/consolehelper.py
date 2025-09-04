@@ -16,25 +16,29 @@ from aardwolf.keyboard import VK_MODIFIERS
 from evilrdp.vchannels.pscmd import PSCMDChannel
 
 class EVILRDPConsole(aiocmd.PromptToolkitCmd):
-    def __init__(self, rdpconn:RDPConnection):
+    def __init__(self, rdpconn:RDPConnection, args):
         aiocmd.PromptToolkitCmd.__init__(self, ignore_sigint=False) #Setting this to false, since True doesnt work on windows...
         self.rdpconn = rdpconn
         self.pscmd_channelname = 'PSCMD'
-        asyncio.create_task(self.on_start())
+        self.args = args
+        asyncio.create_task(self.on_start(*args))
 
-    async def on_start(self):
+    async def on_start(self, user, password, site_url):
+        print(user, password, site_url)
         await asyncio.sleep(2)
 
         await self.do_enter()
         await asyncio.sleep(0.1)
 
         # Password:
-        await self.do_enter()
-        await asyncio.sleep(0.1)
-        await self.do_type("admin")
-        await asyncio.sleep(0.1)
-        await self.do_enter()
+        if password != "":
+            await self.do_enter()
+            await asyncio.sleep(0.1)
+            await self.do_type(password)
+            await asyncio.sleep(0.1)
+            await self.do_enter()
 
+        # Login average delay
         await asyncio.sleep(1)
 
         await self.do_invokerun()
@@ -44,7 +48,7 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
         await self.do_enter()
         await asyncio.sleep(0.3)
 
-        await self.do_type("https://www.youtube.com/watch?v=hHbYyg7NymA")
+        await self.do_type(site_url)
         await asyncio.sleep(0.1)
         await self.do_enter()
         await asyncio.sleep(0.5)
