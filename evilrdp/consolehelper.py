@@ -54,6 +54,8 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
         await self.do_type(site_url)
         await asyncio.sleep(0.3)
         await self.do_enter()
+        await asyncio.sleep(3)
+        await self.do_type(" ")
         print(f"Success: {address}")
 
     async def do_info(self):

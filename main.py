@@ -53,8 +53,9 @@ def main():
     The main function of the program.
     """
     ADDRESSES = [
-        *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT5", "password": ""} for i in range(1, 31)],
-        *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT2", "password": ""} for i in range(1, 31)],
+        {"host": "localhost", "user": "Docker", "password": "admin"}
+        # *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT5", "password": ""} for i in range(1, 31)],
+        # *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT2", "password": ""} for i in range(1, 31)],
     ]
     PORT = 3389
 
@@ -72,7 +73,7 @@ def main():
         app = QApplication(sys.argv)
         windows = []
         for address in viable_addresses:
-            window = create_rdp_gui(address["host"], address["user"], address["password"], "https://youtube.com")
+            window = create_rdp_gui(address["host"], address["user"], address["password"], "https://www.youtube.com/watch?v=hHbYyg7NymA")
             window.show()
             windows.append(window)
         
