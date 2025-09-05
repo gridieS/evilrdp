@@ -37,46 +37,46 @@ def create_rdp_gui(url, user, password, site_url):
 def check_port_open(host, port, timeout=10):
     """Checks if a given port is open on a host."""
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(timeout)
-        result = s.connect_ex((host, port))
-        is_open = result == 0
-        s.close()
-        return host, is_open
-    except socket.error:
-        return host, False
-    except Exception as e:
-        print(f"Error checking port for {host}: {e}")
-        return host, False
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)  # 1 second timeout
+        result = sock.connect_ex((host, port))
+        if result == 0:
+            return True
+        else:
+            return False
+    except socket.error as e:
+        return False
+    finally:
+        sock.close()
 
 def main():
     """
     The main function of the program.
     """
     ADDRESSES = [
-        *[f"TECH5-{str(i).zfill(2)}NEW" for i in range(1, 31)], "peerdebian", "localhost"
+        *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "StudentT5", "password": ""} for i in range(1, 41)],
+        *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "StudentT2", "password": ""} for i in range(1, 41)],
+        {"host": "localhost", "user": "Docker", "password": "admin"},
+        {"host": "peerdebian", "user": "Docker", "password": "admin"}
     ]
     PORT = 3389
 
     viable_addresses = []
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        print(f"Starting concurrent port scans on {len(ADDRESSES)} addresses...")
-        results = executor.map(check_port_open, ADDRESSES, [PORT] * len(ADDRESSES))
-        
-        for host, is_open in results:
-            if is_open:
-                print(f"Port open at {host}, adding to list...")
-                viable_addresses.append(host)
-            else:
-                print(f"Port closed at {host}")
+    for address in ADDRESSES:
+        host = address["host"]
+        if check_port_open(host, PORT):
+            print(f"Port open at {host}, adding to list...")
+            viable_addresses.append(address)
+        else:
+            print(f"Port closed at {host}")
     
     # This is the new part.
     if viable_addresses:
         app = QApplication(sys.argv)
         windows = []
         for address in viable_addresses:
-            window = create_rdp_gui(address, "Docker", "admin", "https://youtube.com")
+            window = create_rdp_gui(address["host"], address["user"], address["password"], "https://youtube.com")
             window.show()
             windows.append(window)
         
