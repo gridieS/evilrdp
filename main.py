@@ -14,7 +14,7 @@ def create_rdp_gui(url, user, password, site_url):
     This function creates and returns an EvilRDPGUI instance.
     It does NOT start the application loop.
     """
-    formatted_url = f"rdp+plain://{user}@{url}"
+    formatted_url = f"rdp+ntlm-password://{user}:{password}@{url}"
     logger.setLevel(logging.INFO)
     
     height = 1024
@@ -30,7 +30,7 @@ def create_rdp_gui(url, user, password, site_url):
     settings.mhover = True
     settings.keyboard = True
     
-    qtclient = EvilRDPGUI([user, password, site_url], settings)
+    qtclient = EvilRDPGUI([url ,user, password, site_url], settings)
     return qtclient
 
 # This is the worker function for checking ports. It is safe to run this in a thread.
@@ -54,10 +54,9 @@ def main():
     The main function of the program.
     """
     ADDRESSES = [
-        *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "StudentT5", "password": ""} for i in range(1, 41)],
-        *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "StudentT2", "password": ""} for i in range(1, 41)],
+        *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT5", "password": ""} for i in range(1, 31)],
+        *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT2", "password": ""} for i in range(1, 31)],
         {"host": "localhost", "user": "Docker", "password": "admin"},
-        {"host": "peerdebian", "user": "Docker", "password": "admin"}
     ]
     PORT = 3389
 

@@ -28,19 +28,18 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
         self.pscmd_channelname = 'PSCMD'
         self.args = args
 
-    async def on_start(self, user, password, site_url):
-        await asyncio.sleep(2)
+    async def on_start(self, address, user, password, site_url):
 
-        await self.do_enter()
-        await asyncio.sleep(0.3)
+        # if password != "":
+        #     await asyncio.sleep(2)
+        #     await self.do_enter()
+        #     await asyncio.sleep(0.3)
 
-        # Password:
-        if password != "":
-            await self.do_enter()
-            await asyncio.sleep(0.3)
-            await self.do_type(password)
-            await asyncio.sleep(0.3)
-            await self.do_enter()
+        #     await self.do_enter()
+        #     await asyncio.sleep(0.3)
+        #     await self.do_type(password)
+        #     await asyncio.sleep(0.3)
+        #     await self.do_enter()
 
         # Login average delay
         await asyncio.sleep(3)
@@ -55,6 +54,7 @@ class EVILRDPConsole(aiocmd.PromptToolkitCmd):
         await self.do_type(site_url)
         await asyncio.sleep(0.3)
         await self.do_enter()
+        print(f"Success: {address}")
 
     async def do_info(self):
         print('HELLO!')
