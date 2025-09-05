@@ -33,7 +33,6 @@ def create_rdp_gui(url, user, password, site_url):
     qtclient = EvilRDPGUI([url ,user, password, site_url], settings)
     return qtclient
 
-# This is the worker function for checking ports. It is safe to run this in a thread.
 def check_port_open(host, port, timeout=10):
     """Checks if a given port is open on a host."""
     try:
@@ -56,7 +55,6 @@ def main():
     ADDRESSES = [
         *[{"host": f"TECH5-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT5", "password": ""} for i in range(1, 31)],
         *[{"host": f"TECH2-{str(i).zfill(2)}NEW", "user": "BENGURION\StudentT2", "password": ""} for i in range(1, 31)],
-        {"host": "localhost", "user": "Docker", "password": "admin"},
     ]
     PORT = 3389
 
@@ -70,7 +68,6 @@ def main():
         else:
             print(f"Port closed at {host}")
     
-    # This is the new part.
     if viable_addresses:
         app = QApplication(sys.argv)
         windows = []
@@ -79,7 +76,6 @@ def main():
             window.show()
             windows.append(window)
         
-        # The single call to app.exec_() manages all open windows.
         app.exec_()
         qApp.quit()
     else:
